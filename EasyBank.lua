@@ -147,10 +147,10 @@ function RefreshAccountFromPage (account, since, statementsPage)
 	print("--------- TRANSACTIONS PAGE " .. page .. " ---------")
 	tableRows:each(
 		function (index, element)
-			local transation = TransactionFromTableRow(element)
-			print(TimestampToDateString(transation.bookingDate) .. " -- " .. transation.amount .. " -- " .. transation.purpose)
-			if transation.bookingDate >= since then
-				table.insert(transactions, transation)
+			local transaction = TransactionFromTableRow(element)
+			print(TimestampToDateString(transaction.bookingDate) .. " -- " .. transaction.amount .. " -- " .. transaction.purpose)
+			if transaction.bookingDate >= since then
+				table.insert(transactions, transaction)
 			else
 				nextPage = false
 				return false
@@ -183,9 +183,24 @@ end
 
 
 function TransactionFromTableRow (tableRow)
+	-- Parse different lines of purpose
+	p = { tableRow:xpath("td[4]/text()"):text(),
+	    tableRow:xpath("td[4]/br/following::text()"):text(),
+		tableRow:xpath("td[4]/br[2]/following::text()"):text() }
+	pstr = ""
+	for i=1,3 do
+		if p[i]:len() > 0 then
+			-- Separate them by blanks
+			if pstr:len() > 0 then
+				pstr = pstr .. " "
+			end
+			pstr = pstr .. p[i]
+		end
+	end
+
 	local transaction = {
 		bookingDate = DateStringToTimestamp(tableRow:xpath("td[2]"):text()),
-		purpose = tableRow:xpath("td[4]"):text(),
+		purpose = pstr,
 		amount = AmountStringToNumber(tableRow:xpath("td[10]"):text()),
 		valueDate = DateStringToTimestamp(tableRow:xpath("td[6]"):text())
 	}
