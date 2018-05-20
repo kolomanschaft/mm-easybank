@@ -5,20 +5,23 @@ For Banks who don't support HBCI/FinTS (which is most non-german banks) MoneyMon
 
 **mm-easybank** is such an extension for the austrian online bank **EasyBank**.
 
-**NOTE: This extension can only be used in Beta versions of MoneyMoney**
-
-For security reasons MoneyMoney only lets you use signed extensions. This extension **does not** have a signature. However you can stil use it by deactivating the signature check, but this can only be done in Beta-Versions of MoneyMoney.
+For security reasons MoneyMoney only lets you use signed extensions. The extension in `master` may not have a valid signature. Therefore you can only use it with Beta versions of MoneyMoney which allow you to deactivate code signature checks. If you don't want to use a Beta, check out the _releases_ section to find the latest signed release.
 
 ## Installation
 
-### Get a Beta Version
-
-For reasons explained above this extension only works with Beta Versions of MoneyMoney. To get a Beta version activate the flag _Participate in beta tests and display pre-release versions_ in the general preferences.
-
 ### Install the extension
 
-* Open MoneyMoney and open the preferences (`Cmd + ,`)
-* In the _Extensions_ tab deactivate the flag _Verify digital signatures of extensions_
+* Go to _releases_ and download the latest signed release of this extension
+* Open MoneyMoney
 * Select from the menu *Help > Show Database in Finder*
 * Take the file `EasyBank.lua` from this Repo and place it in the `Extensions` folder
 * A new account type _EasyBank_ should instantly show up in the _Add account_ dialog.
+
+### Installing a development version
+
+If you want to use the development version from `master` you have to use a Beta Version of MoneyMoney for reasons explained above. To get the latest Beta activate the flag _Participate in beta tests and display pre-release versions_ in the general preferences.
+
+#### Deactivate Code Signatures
+
+* Open MoneyMoney and open the preferences (`Cmd + ,`)
+* In the _Extensions_ tab deactivate the flag _Verify digital signatures of extensions_
