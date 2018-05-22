@@ -8,7 +8,8 @@ WebBanking	{
 local mainPage = nil
 local connection = nil
 local easyBankBic = "EASYATW1"
-local logoutUrl = "https://ebanking.easybank.at/InternetBanking/InternetBanking/?d=logoutredirect&isgetprg=true"
+local baseUrl = "https://ebanking.easybank.at"
+local logoutUrl = baseUrl .. "/InternetBanking/InternetBanking/?d=logoutredirect&isgetprg=true"
 
 
 function SupportsBank(protocol, bankCode)
@@ -183,11 +184,32 @@ end
 
 
 function TransactionFromTableRow (tableRow)
+	local onclickAttr = tableRow:xpath("td[12]/a/@onclick"):text()
+	local belegPath = ""
+	if onclickAttr then
+		belegPath = string.match(onclickAttr, "/.*[0-9]+'")
+		if belegPath then
+			belegPath = belegPath:sub(1,-2)
+		end
+	end
+	local counterpartyIBAN = nil
+	local counterpartyDescription1 = nil
+	if belegPath then
+		-- found Beleg, so process it
+		local belegUrl = baseUrl .. belegPath
+		local belegPage = HTML(connection:get(belegUrl))
+		local supplementText = belegPage:xpath('//table[@class="supplementtext"]')
+		counterpartyIBAN = supplementText:xpath('tr[25]/td'):text()
+		counterpartyDescription1 = supplementText:xpath('tr[26]/td'):text()
+	end
+
 	local transaction = {
 		bookingDate = DateStringToTimestamp(tableRow:xpath("td[2]"):text()),
 		purpose = tableRow:xpath("td[4]"):text(),
 		amount = AmountStringToNumber(tableRow:xpath("td[10]"):text()),
-		valueDate = DateStringToTimestamp(tableRow:xpath("td[6]"):text())
+		valueDate = DateStringToTimestamp(tableRow:xpath("td[6]"):text()),
+		accountNumber = counterpartyIBAN,
+		name = counterpartyDescription1
 	}
 
 	return transaction
