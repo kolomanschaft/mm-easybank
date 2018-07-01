@@ -2,7 +2,7 @@ WebBanking        {
         version = 0.1,
         url = "https://ebanking.easybank.at/InternetBanking/InternetBanking?d=login&svc=EASYBANK&ui=html&lang=de",
         services = {"EasyBank"},
-        description = "Extension für die österreichische Onine Bank EasyBank"
+        description = "Extension für die österreichische Online Bank EasyBank"
 }
 
 local mainPage = nil
