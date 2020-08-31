@@ -208,8 +208,12 @@ function TransactionFromTableRow (tableRow)
             end
         end
 
-        if lineIndex > lineIndexAccountName then
-            accountName = accountName .. ' ' .. table.concat(lines, ' ', lineIndexAccountName + 1)
+        if lineIndexAccountName == not nil then
+            if lineIndex > lineIndexAccountName then
+                accountName = accountName .. ' ' .. table.concat(lines, ' ', lineIndexAccountName + 1)
+            end
+        else
+            purpose = text
         end
 
         local transaction = {
