@@ -192,6 +192,13 @@ function TransactionFromTableRow (tableRow)
             lineIndex = lineIndex + 1
 
             for part in line:gmatch("%S+") do 
+
+                accountName = nil
+                accountNumber = nil
+                purpose = nil
+                bankCode = nil
+                lineIndexAccountName = nil
+
                 if isIban(part) then
                     accountNumber = part
                     purpose = table.concat(lines, "\r\n", 1, lineIndex - 1)
