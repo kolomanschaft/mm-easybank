@@ -55,9 +55,9 @@ function ListAccounts (knownAccounts)
         end
 
         -- Add Credit Card Accounts
-        local giroTable = mainPage:xpath("//*[@id='PART_CREDIT_CARD']")
-        local giroAccounts = AccountsFromTable(giroTable, AccountTypeCreditCard)
-        for i,acc in ipairs(giroAccounts) do
+        local creditCardTable = mainPage:xpath("//*[@id='PART_CREDIT_CARD']")
+        local creditCardAccounts = AccountsFromTable(creditCardTable, AccountTypeCreditCard)
+        for i,acc in ipairs(creditCardAccounts) do
                 table.insert(accounts, acc)
         end
 
